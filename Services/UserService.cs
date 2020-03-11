@@ -52,11 +52,11 @@ namespace MyFortAPI.Services
 		}
 
 		/// <inheritdoc />
-		public async Task<User> Authenticate(string loginName, string password)
+		public async Task<User> Authenticate(string email, string password)
 		{
 			var encPassword = this.encryptionHelper.Encrypt(password);
 			var user = await this.myFortDBContext.Users
-				.Where(x => x.LoginName.ToLower() == loginName.ToLower() && x.Password == encPassword)
+				.Where(x => x.Email.ToLower() == email.ToLower() && x.Password == encPassword)
 				.FirstOrDefaultAsync<MyFortAPI.Data.Users>();
 
 			if (user != null)
@@ -96,15 +96,20 @@ namespace MyFortAPI.Services
 		/// <inheritdoc />
 		public async Task<User> RegisterUser(RegisterUser registerUser)
 		{
+			var existingUser = await this.myFortDBContext.Users.FirstOrDefaultAsync<MyFortAPI.Data.Users>(x => x.Email == registerUser.User.Email);
+			if (existingUser != null)
+			{
+				throw new Exception("User with current email already exists, try login using your email and password.");
+			}
+
 			var user = new Users
 			{
 				Email = registerUser.User.Email,
 				FirstName = registerUser.User.FirstName,
 				LastName = registerUser.User.LastName,
-				LoginName = registerUser.User.LoginName,
 				IsActive = false,
 				Password = this.encryptionHelper.Encrypt(registerUser.Password),
-				Type = (int)Models.UserTypes.RegularUser,
+				Type = (int)Models.TypeOfUser.RegularUser,
 				LastModifiedOn = DateTime.Now,
 				LastModifiedBy = 1 //// Default user
 			};
@@ -153,9 +158,8 @@ namespace MyFortAPI.Services
 				Email = user.Email,
 				FirstName = user.FirstName,
 				LastName = user.LastName,
-				LoginName = user.LoginName,
 				IsActive = user.IsActive,
-				Type = (Models.UserTypes)user.Type,
+				Type = (Models.TypeOfUser)user.Type,
 			};
 		}
 	}

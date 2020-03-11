@@ -18,10 +18,10 @@ namespace MyFortAPI.Services
 		/// <summary>
 		/// The Authenticate
 		/// </summary>
-		/// <param name="loginName">The loginName<see cref="string"/></param>
+		/// <param name="email">The email<see cref="string"/></param>
 		/// <param name="password">The password<see cref="string"/></param>
-		/// <returns>The <see cref="User"/></returns>
-		Task<User> Authenticate(string loginName, string password);
+		/// <returns>The <see cref="Task{User}"/></returns>
+		Task<User> Authenticate(string email, string password);
 
 		/// <summary>
 		/// The GetUser
@@ -40,7 +40,7 @@ namespace MyFortAPI.Services
 		/// The RegisterUser
 		/// </summary>
 		/// <param name="registerUser">The registerUser<see cref="RegisterUser"/></param>
-		/// <returns>The <see cref="User"/></returns>
+		/// <returns>The <see cref="Task{User}"/></returns>
 		Task<User> RegisterUser(RegisterUser registerUser);
 
 		/// <summary>

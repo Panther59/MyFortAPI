@@ -12,9 +12,9 @@ namespace MyFortAPI.Models
 	public class AuthenticateRequest
 	{
 		/// <summary>
-		/// Gets or sets the LoginName
+		/// Gets or sets the Email
 		/// </summary>
-		public string LoginName { get; set; }
+		public string Email { get; set; }
 
 		/// <summary>
 		/// Gets or sets the Password

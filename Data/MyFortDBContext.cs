@@ -23,9 +23,7 @@ namespace MyFortAPI.Data
         {
             modelBuilder.Entity<Outlets>(entity =>
             {
-                entity.Property(e => e.Id)
-                    .HasColumnName("ID")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.Description)
                     .HasMaxLength(200)
@@ -42,12 +40,6 @@ namespace MyFortAPI.Data
                     .IsRequired()
                     .HasMaxLength(100)
                     .IsUnicode(false);
-
-                entity.HasOne(d => d.LastModifiedByNavigation)
-                    .WithMany(p => p.Outlets)
-                    .HasForeignKey(d => d.LastModifiedBy)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Outlets_ModifedUser");
             });
 
             modelBuilder.Entity<UserTypes>(entity =>
@@ -58,7 +50,7 @@ namespace MyFortAPI.Data
 
                 entity.Property(e => e.Name)
                     .IsRequired()
-                    .HasMaxLength(100)
+                    .HasMaxLength(50)
                     .IsUnicode(false);
             });
 
@@ -68,7 +60,7 @@ namespace MyFortAPI.Data
 
                 entity.Property(e => e.Email)
                     .IsRequired()
-                    .HasMaxLength(150)
+                    .HasMaxLength(200)
                     .IsUnicode(false);
 
                 entity.Property(e => e.FirstName)
@@ -83,27 +75,10 @@ namespace MyFortAPI.Data
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
-                entity.Property(e => e.LoginName)
-                    .IsRequired()
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
-
                 entity.Property(e => e.Password)
                     .IsRequired()
-                    .HasMaxLength(200)
+                    .HasMaxLength(500)
                     .IsUnicode(false);
-
-                entity.HasOne(d => d.LastModifiedByNavigation)
-                    .WithMany(p => p.InverseLastModifiedByNavigation)
-                    .HasForeignKey(d => d.LastModifiedBy)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Users_Users");
-
-                entity.HasOne(d => d.TypeNavigation)
-                    .WithMany(p => p.Users)
-                    .HasForeignKey(d => d.Type)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Users_UserTypes");
             });
 
             OnModelCreatingPartial(modelBuilder);

@@ -12,9 +12,9 @@ namespace MyFortAPI.Filters
 	public class UserRoleFilter : IAuthorizationFilter
 	{
 		readonly string _claim;
-		readonly UserTypes _value;
+		readonly TypeOfUser _value;
 
-		public UserRoleFilter(string claim, UserTypes value)
+		public UserRoleFilter(string claim, TypeOfUser value)
 		{
 			_claim = claim;
 			_value = value;
@@ -23,7 +23,7 @@ namespace MyFortAPI.Filters
 		public void OnAuthorization(AuthorizationFilterContext context)
 		{
 			var inputValue = context.HttpContext.User.Claims.FirstOrDefault(c => c.Type == _claim);
-			if (inputValue == null || !_value.HasFlag((UserTypes)Enum.Parse(typeof(UserTypes), inputValue.Value)))
+			if (inputValue == null || !_value.HasFlag((TypeOfUser)Enum.Parse(typeof(TypeOfUser), inputValue.Value)))
 			{
 				context.Result = new ForbidResult();
 			}

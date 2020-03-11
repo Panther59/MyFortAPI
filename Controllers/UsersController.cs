@@ -7,7 +7,6 @@
 namespace MyFortAPI.Controllers
 {
 	using Microsoft.AspNetCore.Authorization;
-	using Microsoft.AspNetCore.Http;
 	using Microsoft.AspNetCore.Mvc;
 	using Microsoft.Extensions.Configuration;
 	using Microsoft.IdentityModel.Tokens;
@@ -18,7 +17,6 @@ namespace MyFortAPI.Controllers
 	using System;
 	using System.Collections.Generic;
 	using System.IdentityModel.Tokens.Jwt;
-	using System.Linq;
 	using System.Security.Claims;
 	using System.Text;
 	using System.Threading.Tasks;
@@ -35,12 +33,16 @@ namespace MyFortAPI.Controllers
 		/// Defines the configuration
 		/// </summary>
 		private readonly IConfiguration configuration;
-		private readonly ISession session;
 
 		/// <summary>
 		/// Defines the encryptionHelper
 		/// </summary>
 		private readonly IEncryptionHelper encryptionHelper;
+
+		/// <summary>
+		/// Defines the session
+		/// </summary>
+		private readonly ISession session;
 
 		/// <summary>
 		/// Defines the usersService
@@ -50,6 +52,7 @@ namespace MyFortAPI.Controllers
 		/// <summary>
 		/// Initializes a new instance of the <see cref="UsersController"/> class.
 		/// </summary>
+		/// <param name="session">The session<see cref="ISession"/></param>
 		/// <param name="encryptionHelper">The encryptionHelper<see cref="IEncryptionHelper"/></param>
 		/// <param name="usersService">The usersService<see cref="IUsersService"/></param>
 		/// <param name="configuration">The configuration<see cref="IConfiguration"/></param>
@@ -76,7 +79,7 @@ namespace MyFortAPI.Controllers
 		{
 			if (request != null)
 			{
-				var user = await this.usersService.Authenticate(request.LoginName, request.Password);
+				var user = await this.usersService.Authenticate(request.Email, request.Password);
 
 				if (user == null)
 				{
@@ -104,7 +107,7 @@ namespace MyFortAPI.Controllers
 		/// </summary>
 		/// <returns>The <see cref="Task{List{User}}"/></returns>
 		[HttpGet]
-		[UserTypeFilter(ClaimTypes.Role, UserTypes.Admin | UserTypes.ITAdmin | UserTypes.OpertionHead | UserTypes.Supervisor)]
+		[UserTypeFilter(ClaimTypes.Role, TypeOfUser.Admin | TypeOfUser.ITAdmin | TypeOfUser.Supervisor)]
 		public async Task<List<User>> Get()
 		{
 			return await this.usersService.GetUsers();
@@ -124,7 +127,7 @@ namespace MyFortAPI.Controllers
 			}
 			else
 			{
-				return null;
+				throw new UnauthorizedAccessException("User toekn is missing.");
 			}
 		}
 
@@ -140,8 +143,13 @@ namespace MyFortAPI.Controllers
 			return await this.usersService.RegisterUser(user);
 		}
 
+		/// <summary>
+		/// The Update
+		/// </summary>
+		/// <param name="user">The user<see cref="User"/></param>
+		/// <returns>The <see cref="Task{User}"/></returns>
 		[HttpPut("update")]
-		[UserTypeFilter(ClaimTypes.Role, UserTypes.Admin | UserTypes.ITAdmin | UserTypes.OpertionHead | UserTypes.Supervisor)]
+		[UserTypeFilter(ClaimTypes.Role, TypeOfUser.Admin | TypeOfUser.ITAdmin | TypeOfUser.Supervisor)]
 		public async Task<User> Update(User user)
 		{
 			return await this.usersService.UpdateUser(user);
@@ -160,7 +168,6 @@ namespace MyFortAPI.Controllers
 			var claims = new[] {
 						new Claim(ClaimTypes.NameIdentifier, user.ID.ToString()),
 						new Claim(ClaimTypes.Email, user.Email),
-						new Claim(JwtRegisteredClaimNames.UniqueName, user.LoginName),
 						new Claim(ClaimTypes.Role, user.Type.ToString()),
 						new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())};
 

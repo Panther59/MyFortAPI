@@ -11,7 +11,5 @@ namespace MyFortAPI.Data
         public string Location { get; set; }
         public DateTime LastModifiedOn { get; set; }
         public int LastModifiedBy { get; set; }
-
-        public virtual Users LastModifiedByNavigation { get; set; }
     }
 }

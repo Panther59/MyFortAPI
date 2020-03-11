@@ -9,7 +9,7 @@ namespace MyFortAPI.Filters
 {
 	public class UserTypeFilterAttribute : TypeFilterAttribute
 	{
-		public UserTypeFilterAttribute(string claim, UserTypes value) : base(typeof(UserRoleFilter))
+		public UserTypeFilterAttribute(string claim, TypeOfUser value) : base(typeof(UserRoleFilter))
 		{
 			Arguments = new object[] { claim, value };
 		}

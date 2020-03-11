@@ -37,13 +37,8 @@ namespace MyFortAPI.Models
 		public string LastName { get; set; }
 
 		/// <summary>
-		/// Gets or sets the LoginName
-		/// </summary>
-		public string LoginName { get; set; }
-
-		/// <summary>
 		/// Gets or sets the Type
 		/// </summary>
-		public UserTypes? Type { get; set; }
+		public TypeOfUser? Type { get; set; }
 	}
 }
