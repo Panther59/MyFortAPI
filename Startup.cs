@@ -57,7 +57,9 @@ namespace MyFortAPI
             var connection = Configuration.GetConnectionString("MyFortDBConnectionString");
             services.AddDbContext<MyFortDBContext>(o => o.UseSqlServer(connection));
             services.AddScoped<ISession, Session>();
+            services.AddScoped<IMapper, Mapper>();
             services.AddScoped<IUsersService, UserService>();
+            services.AddScoped<IOutletService, OutletService>();
             services.AddSingleton<IEncryptionHelper, EncryptionHelper>();
         }
 

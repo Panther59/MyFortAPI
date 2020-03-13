@@ -9,7 +9,11 @@ namespace MyFortAPI.Data
         public string Name { get; set; }
         public string Description { get; set; }
         public string Location { get; set; }
+        public string ContactName { get; set; }
+        public string ContactNumber { get; set; }
         public DateTime LastModifiedOn { get; set; }
         public int LastModifiedBy { get; set; }
+
+        public virtual Users LastModifiedByNavigation { get; set; }
     }
 }

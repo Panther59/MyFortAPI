@@ -136,7 +136,7 @@ namespace MyFortAPI.Controllers
 		/// </summary>
 		/// <param name="user">The user<see cref="RegisterUser"/></param>
 		/// <returns>The <see cref="Task{User}"/></returns>
-		[HttpPut("register")]
+		[HttpPost("register")]
 		[AllowAnonymous]
 		public async Task<User> Register(RegisterUser user)
 		{
@@ -148,7 +148,7 @@ namespace MyFortAPI.Controllers
 		/// </summary>
 		/// <param name="user">The user<see cref="User"/></param>
 		/// <returns>The <see cref="Task{User}"/></returns>
-		[HttpPut("update")]
+		[HttpPost("update")]
 		[UserTypeFilter(ClaimTypes.Role, TypeOfUser.Admin | TypeOfUser.ITAdmin | TypeOfUser.Supervisor)]
 		public async Task<User> Update(User user)
 		{

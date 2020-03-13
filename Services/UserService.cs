@@ -56,12 +56,23 @@ namespace MyFortAPI.Services
 		{
 			var encPassword = this.encryptionHelper.Encrypt(password);
 			var user = await this.myFortDBContext.Users
-				.Where(x => x.Email.ToLower() == email.ToLower() && x.Password == encPassword)
+				.Where(x => x.Email.ToLower() == email.ToLower())
 				.FirstOrDefaultAsync<MyFortAPI.Data.Users>();
 
 			if (user != null)
 			{
-				return this.MapUser(user);
+				if (user.Password != encPassword)
+				{
+					throw new UnauthorizedAccessException("Credentials are invalid");
+				}
+				else if (user.IsActive == false)
+				{
+					throw new UnauthorizedAccessException("Your account is not active, reach out to Admin");
+				}
+				else
+				{
+					return this.MapUser(user);
+				}
 			}
 			else
 			{
