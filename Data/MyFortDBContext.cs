@@ -24,9 +24,7 @@ namespace MyFortAPI.Data
         {
             modelBuilder.Entity<Outlets>(entity =>
             {
-                entity.Property(e => e.Id)
-                    .HasColumnName("ID")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.ContactName)
                     .HasMaxLength(200)
@@ -112,9 +110,7 @@ namespace MyFortAPI.Data
 
             modelBuilder.Entity<Visits>(entity =>
             {
-                entity.Property(e => e.Id)
-                    .HasColumnName("ID")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.MeetingWith)
                     .HasMaxLength(200)

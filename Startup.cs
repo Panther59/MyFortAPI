@@ -59,6 +59,7 @@ namespace MyFortAPI
             services.AddScoped<ISession, Session>();
             services.AddScoped<IMapper, Mapper>();
             services.AddScoped<IUsersService, UserService>();
+            services.AddScoped<IVisitsService, VisitsService>();
             services.AddScoped<IOutletService, OutletService>();
             services.AddSingleton<IEncryptionHelper, EncryptionHelper>();
         }

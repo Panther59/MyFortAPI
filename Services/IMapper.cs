@@ -34,5 +34,19 @@ namespace MyFortAPI.Services
 		/// <param name="user">The user<see cref="Users"/></param>
 		/// <returns>The <see cref="User"/></returns>
 		User MapUser(Users user);
+
+		/// <summary>
+		/// The MapVisit
+		/// </summary>
+		/// <param name="input">The input<see cref="Visit"/></param>
+		/// <returns>The <see cref="Visits"/></returns>
+		Visits MapVisit(Visit input);
+
+		/// <summary>
+		/// The MapVisit
+		/// </summary>
+		/// <param name="input">The input<see cref="Visits"/></param>
+		/// <returns>The <see cref="Visit"/></returns>
+		Visit MapVisit(Visits input);
 	}
 }
