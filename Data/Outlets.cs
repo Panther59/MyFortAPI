@@ -5,6 +5,11 @@ namespace MyFortAPI.Data
 {
     public partial class Outlets
     {
+        public Outlets()
+        {
+            Visits = new HashSet<Visits>();
+        }
+
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
@@ -15,5 +20,6 @@ namespace MyFortAPI.Data
         public int LastModifiedBy { get; set; }
 
         public virtual Users LastModifiedByNavigation { get; set; }
+        public virtual ICollection<Visits> Visits { get; set; }
     }
 }

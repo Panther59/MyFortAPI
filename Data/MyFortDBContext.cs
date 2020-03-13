@@ -18,6 +18,7 @@ namespace MyFortAPI.Data
         public virtual DbSet<Outlets> Outlets { get; set; }
         public virtual DbSet<UserTypes> UserTypes { get; set; }
         public virtual DbSet<Users> Users { get; set; }
+        public virtual DbSet<Visits> Visits { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -107,6 +108,39 @@ namespace MyFortAPI.Data
                     .HasForeignKey(d => d.Type)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Users_UserTypes");
+            });
+
+            modelBuilder.Entity<Visits>(entity =>
+            {
+                entity.Property(e => e.Id)
+                    .HasColumnName("ID")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.MeetingWith)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Notes)
+                    .HasMaxLength(1000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.OutletId).HasColumnName("OutletID");
+
+                entity.Property(e => e.UserId).HasColumnName("UserID");
+
+                entity.Property(e => e.VisitedOn).HasColumnType("datetime");
+
+                entity.HasOne(d => d.Outlet)
+                    .WithMany(p => p.Visits)
+                    .HasForeignKey(d => d.OutletId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Visits_Outlets");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Visits)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Visits_Users");
             });
 
             OnModelCreatingPartial(modelBuilder);

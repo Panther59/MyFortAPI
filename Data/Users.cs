@@ -9,6 +9,7 @@ namespace MyFortAPI.Data
         {
             InverseLastModifiedByNavigation = new HashSet<Users>();
             Outlets = new HashSet<Outlets>();
+            Visits = new HashSet<Visits>();
         }
 
         public int Id { get; set; }
@@ -25,5 +26,6 @@ namespace MyFortAPI.Data
         public virtual UserTypes TypeNavigation { get; set; }
         public virtual ICollection<Users> InverseLastModifiedByNavigation { get; set; }
         public virtual ICollection<Outlets> Outlets { get; set; }
+        public virtual ICollection<Visits> Visits { get; set; }
     }
 }
